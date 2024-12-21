@@ -4,7 +4,7 @@ import java.util.Deque;
 import java.util.List;
 
 class Solution {
-    int res = 1;
+    int res = 0;
     public int maxKDivisibleComponents(int n, int[][] edges, int[] values, int k) {
         List<List<Integer>> g = new ArrayList<>();
         for(int i = 0; i < n; i++) {
@@ -16,8 +16,8 @@ class Solution {
         }
         boolean[] vis = new boolean[n];
         Node root = new Node(0, values[0]);
-        
-        
+
+
         Deque<Node> q = new ArrayDeque<>();
         q.offer(root);
         while(!q.isEmpty()) {
@@ -34,42 +34,30 @@ class Solution {
             }
         }
         sum(root, k);
-        print(root);
 
-        
 
         return res;
 
     }
-    int sum(Node node, int k) {
+    long sum(Node node, int k) {
         node.sum = node.val;
         for(Node child : node.children) {
             node.sum += sum(child, k);
         }
-        if(node.num % k == 0) {
+        if(node.sum % k == 0) {
             res++;
             return 0;
         }
         return node.sum;
     }
-    void print(Node root) {
-        Deque<Node> q = new ArrayDeque<>();
-        q.offer(root);
-        while(!q.isEmpty()) {
-            Node cur = q.poll();
-            System.out.println("Node # " + cur.num + " val: " + cur.val + " ||||| sum :  " + cur.sum);
-            for(Node child : cur.children) {
-                q.offer(child);
-            }
-        }
-    }
+
 }
 
 class Node {
     int num;
-    int val;
-    int sum = 0;
-    
+    long val;
+    long sum = 0;
+
     List<Node> children = new ArrayList<>();
     Node(int  num, int val) {
         this.val = val;
